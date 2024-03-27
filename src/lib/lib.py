@@ -32,3 +32,8 @@ class Израз:
         return
     
     
+class Симбол(Израз): #podrazumevano je realan
+    def __init__(self, ime, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
+        self._ime = ime
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+
