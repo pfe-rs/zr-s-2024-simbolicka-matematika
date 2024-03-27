@@ -1,6 +1,6 @@
 
 
-class Израз:
+class Izraz:
     def __init__(self, ceo, realan, pozitivan, negativan, nula):
         self._ceo=ceo
         self._realan=realan
@@ -32,12 +32,12 @@ class Израз:
         return
     
     
-class Симбол(Израз): #podrazumevano je realan
+class Simbol(Izraz): #podrazumevano je realan
     def __init__(self, ime, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._ime = ime
         super().__init__(ceo, realan, pozitivan, negativan, nula)
 
-class Број(Израз): #podrazumevano je realan
+class Broj(Izraz): #podrazumevano je realan
     def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._vrednost = vrednost
         super().__init__(ceo, realan, pozitivan, negativan, nula)
