@@ -1,11 +1,11 @@
 
 
 class Израз:
-    def __init__(self, ceo, r, p, n, nula):
+    def __init__(self, ceo, realan, pozitivan, negativan, nula):
         self._ceo=ceo
-        self._realan=r
-        self._pozitivan=p
-        self._negativan = n
+        self._realan=realan
+        self._pozitivan=pozitivan
+        self._negativan = negativan
         self._nula = nula
     def __neg__(self):
         pass
