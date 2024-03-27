@@ -37,3 +37,7 @@ class Симбол(Израз): #podrazumevano je realan
         self._ime = ime
         super().__init__(ceo, realan, pozitivan, negativan, nula)
 
+class Број(Израз): #podrazumevano je realan
+    def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
+        self._vrednost = vrednost
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
