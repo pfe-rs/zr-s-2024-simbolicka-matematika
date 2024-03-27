@@ -43,3 +43,27 @@ class Broj(Izraz): #podrazumevano je realan
     def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._vrednost = vrednost
         super().__init__(ceo, realan, pozitivan, negativan, nula)
+class Neg(Izraz):
+    def __init__(self, izraz):
+        self._izraz = izraz
+        ceo = izraz._ceo
+        realan = izraz._realan
+        if izraz._pozitivan==True:
+            pozitivan = False
+            negativan = True
+        elif izraz._negativan == True:
+            pozitivan = True
+            negativan = False
+        else:
+            pozitivan=None
+            negativan=None
+
+        nula = izraz._nula
+
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+
+    def simplify(izraz):
+        if isinstance(izraz, Neg):
+            return izraz._izraz
+        else:
+            return Neg(izraz)
