@@ -38,3 +38,13 @@ class Simbol(Izraz):  # podrazumevano je realan
 
     def __str__(self):
         return f"{self._ime}"
+
+
+class Broj(Izraz):  # podrazumevano je realan
+    def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
+        self._vrednost = vrednost
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+
+    def __str__(self):
+        return f"{str(self._vrednost)}"
+
