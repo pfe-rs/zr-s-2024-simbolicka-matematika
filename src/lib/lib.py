@@ -9,7 +9,6 @@ class Izraz:
         self._nula = nula
     def __neg__(self):
         pass
-        #return Neg.simplify(self)
     def __eq__(self, b):
         pass
         #return self==b?
@@ -39,31 +38,12 @@ class Simbol(Izraz): #podrazumevano je realan
         self._ime = ime
         super().__init__(ceo, realan, pozitivan, negativan, nula)
 
+    def __str__(self):
+        return f"{self._ime}"
+
 class Broj(Izraz): #podrazumevano je realan
     def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._vrednost = vrednost
         super().__init__(ceo, realan, pozitivan, negativan, nula)
-class Neg(Izraz):
-    def __init__(self, izraz):
-        self._izraz = izraz
-        ceo = izraz._ceo
-        realan = izraz._realan
-        if izraz._pozitivan==True:
-            pozitivan = False
-            negativan = True
-        elif izraz._negativan == True:
-            pozitivan = True
-            negativan = False
-        else:
-            pozitivan=None
-            negativan=None
-
-        nula = izraz._nula
-
-        super().__init__(ceo, realan, pozitivan, negativan, nula)
-
-    def simplify(izraz):
-        if isinstance(izraz, Neg):
-            return izraz._izraz
-        else:
-            return Neg(izraz)
+    def __str__(self):
+        return f"{self._vrednost}"
