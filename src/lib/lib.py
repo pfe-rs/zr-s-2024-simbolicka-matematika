@@ -40,6 +40,17 @@ class Izraz:
 
     def __str__(self):
         return
+    def subs(izraz, iz , u):
+        for _ in izraz.lista:
+            if isinstance(_, Simbol):
+                if(_._ime==iz):
+                    _._ime=u
+            elif isinstance(_, Broj):
+                if(_._vrednost==iz):
+                    _._vrednost=u
+            else:
+                Izraz.subs(_, iz, u)
+        return izraz
     
     
 class Simbol(Izraz): #podrazumevano je realan
