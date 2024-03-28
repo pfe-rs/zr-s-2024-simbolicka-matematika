@@ -1,5 +1,3 @@
-
-
 class Izraz:
     def __init__(self, ceo, realan, pozitivan, negativan, nula):
         c = 0
@@ -7,6 +5,9 @@ class Izraz:
         if negativan: c+=1
         if nula: c+=1
         if(c>1):
+            raise ("Los tip!!!")
+        
+        if(not ceo and not realan):
             raise ("Los tip!!!")
         self._ceo=ceo
         self._realan=realan
@@ -21,39 +22,20 @@ class Izraz:
         pass
         #return self==b?
     
-    def __add__(self, b):
-        pass
-        #return Add,.simplify(self, b)
-    
-    def __sub__(self, b):
-        pass
-        #return Sub.simplify(self, b)
-    
-    def simplify():
-        return
-    
-    def collect():
-        return
-    
-    def __str__(self):
-        return
-    
-    
 class Simbol(Izraz): #podrazumevano je realan
     def __init__(self, ime, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._ime = ime
         super().__init__(ceo, realan, pozitivan, negativan, nula)
-
     def __str__(self):
-        return f"{self._ime}"
-
+        return f"{self._vrednost}"
+    
 class Broj(Izraz): #podrazumevano je realan
     def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._vrednost = vrednost
         super().__init__(ceo, realan, pozitivan, negativan, nula)
     def __str__(self):
         return f"{self._vrednost}"
-    
+
 class Neg(Izraz):
 
     def __init__(self, izraz):
@@ -94,10 +76,3 @@ class Neg(Izraz):
             elif s[i] == '+':
                 s = s[:i] + '-' + s[i+1:]
         return s
-    
-x = Broj(2)
-z = Simbol("x", pozitivan=True)
-y = -z
-
-print(type(y))
-print(y._pozitivan, y._negativan)
