@@ -1,34 +1,36 @@
-
-
-class Израз:
+class Izraz:
     def __init__(self, ceo, realan, pozitivan, negativan, nula):
-        self._ceo=ceo
-        self._realan=realan
-        self._pozitivan=pozitivan
+        self._ceo = ceo
+        self._realan = realan
+        self._pozitivan = pozitivan
         self._negativan = negativan
         self._nula = nula
+
     def __neg__(self):
         pass
-        #return Neg.simplify(self)
+        # return Neg.simplify(self)
+
     def __eq__(self, b):
         pass
-        #return self==b?
-    
+        # return self==b?
+
     def __add__(self, b):
-        pass
-        #return Add,.simplify(self, b)
-    
+        return Add.simplify(self, b)
+
     def __sub__(self, b):
         pass
-        #return Sub.simplify(self, b)
-    
+        # return Sub.simplify(self, b)
+
     def simplify():
         return
-    
+
     def collect():
         return
-    
+
     def __str__(self):
+        pass
+
+
 class Simbol(Izraz):  # podrazumevano je realan
     def __init__(self, ime, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         if pozitivan and negativan:
