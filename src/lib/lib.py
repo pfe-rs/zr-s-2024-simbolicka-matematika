@@ -8,10 +8,10 @@ class Izraz:
         if negativan: c+=1
         if nula: c+=1
         if(c>1):
-            raise ("Los tip!!!")
+            raise Exception("Los tip!!!")
         
         if(not ceo and not realan):
-            raise ("Los tip!!!")
+            raise Exception("Los tip!!!")
         self._ceo=ceo
         self._realan=realan
         self._pozitivan=pozitivan
