@@ -29,6 +29,12 @@ class Израз:
         return
     
     def __str__(self):
-        return
-    
-    
+class Simbol(Izraz):  # podrazumevano je realan
+    def __init__(self, ime, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
+        if pozitivan and negativan:
+            raise ("Broj ne moze biti i pozitivan i negativan!!!")
+        self._ime = ime
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+
+    def __str__(self):
+        return f"{self._ime}"
