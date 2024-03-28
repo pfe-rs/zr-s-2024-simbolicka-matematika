@@ -19,9 +19,7 @@ class Izraz:
         self._nula = nula
 
     def __neg__(self):
-        if isinstance(self, Broj):
-            return Broj(-self._vrednost)
-        return Neg(self)
+        return Neg.simplify(self)
 
     def __eq__(self, b):
         pass
@@ -82,8 +80,8 @@ class Neg(Izraz):
     def simplify(izraz):
         if isinstance(izraz, Broj):
             izraz._vrednost=-izraz._vrednost
-            return
-        if isinstance(izraz, Neg):
+            return izraz
+        elif isinstance(izraz, Neg):
             return izraz._izraz
         else:
             return Neg(izraz)
