@@ -5,11 +5,12 @@ class Izraz:
         self._pozitivan = pozitivan
         self._negativan = negativan
         self._nula = nula
-
+        
     def __neg__(self):
-        pass
-        # return Neg.simplify(self)
-
+        if isinstance(self, Broj):
+            return Broj(-self._vrednost)
+        return Neg(self)
+    
     def __eq__(self, b):
         pass
         # return self==b?
