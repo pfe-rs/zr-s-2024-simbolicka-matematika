@@ -179,7 +179,23 @@ class Add(Izraz):
 
     def simplify(a, b):
         if isinstance(a, Broj) and isinstance(b, Broj):
-            x = Broj(int(a._vrednost) + int(b._vrednost))
+            vred = a._vrednost + b._vrednost
+            ceo=False
+            realan=False
+            nula=False
+            poz=False
+            neg=False
+            if isinstance(vred, int):
+                ceo = True
+            else:
+                realan=True
+            if vred==0:
+                nula  =True
+            elif vred>0:
+                poz = True
+            else:
+                neg = True
+            x = Broj(vred, ceo, realan, poz, neg, nula)
             return x
         return Add(a, b)
 
@@ -189,3 +205,4 @@ class Add(Izraz):
             if (len(a) > 0): a = a + " + "
             a = a + x.__str__()
         return a 
+
