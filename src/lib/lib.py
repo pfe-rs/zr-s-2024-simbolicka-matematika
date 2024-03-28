@@ -17,7 +17,7 @@ class Izraz:
         self._pozitivan=pozitivan
         self._negativan = negativan
         self._nula = nula
-
+        
     def __neg__(self):
         return Neg.simplify(self)
 
@@ -85,6 +85,7 @@ class Neg(Izraz):
             return izraz._izraz
         else:
             return Neg(izraz)
+        
     def __str__(self):
         s = str(self._izraz)
         if s[0] == "-":
