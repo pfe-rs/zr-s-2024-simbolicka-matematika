@@ -23,7 +23,6 @@ class Izraz:
         return Neg.simplify(self)
 
     def __eq__(self, b):
-    
         if type(self) == type(b):
             if self.lista == b.lista:
                 return True
@@ -44,20 +43,22 @@ class Izraz:
     def __str__(self):
         return
     
-    def subs(izraz, iz, u):
-        for i in range(len(izraz.lista)):
-            nesto = izraz.lista[i]
+    def subs(self, iz, u):
+        for i in range(len(self.lista)):
+            nesto = self.lista[i]
             if nesto == iz:
-                izraz.lista[i] = u
+                self.lista[i] = u
+            elif nesto == Neg(iz):
+                self.lista[i] = Neg(u)
             elif isinstance(nesto, Izraz):
-                Izraz.subs(nesto, iz, u)
-        return izraz
-    
+                nesto.subs(iz, u)
+        return self
     
 class Simbol(Izraz): #podrazumevano je realan
     def __init__(self, ime, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._ime = ime
         super().__init__(ceo, realan, pozitivan, negativan, nula)
+        self.lista.append(ime)
     def __str__(self):
         return f"{self._ime}"
 
@@ -66,6 +67,7 @@ class Broj(Izraz): #podrazumevano je realan
     def __init__(self, vrednost, ceo=False, realan=True, pozitivan=None, negativan=None, nula=None):
         self._vrednost = vrednost
         super().__init__(ceo, realan, pozitivan, negativan, nula)
+        self.lista.append(vrednost)
     def __str__(self):
         return f"{self._vrednost}"
 
@@ -88,6 +90,7 @@ class Neg(Izraz):
         nula = izraz._nula
 
         super().__init__(ceo, realan, pozitivan, negativan, nula)
+        self.lista.append(izraz)
 
     def simplify(izraz):
         if isinstance(izraz, Broj):
@@ -250,34 +253,21 @@ class Sub(Izraz):
         if a._nula and b._nula:
             nula = True
 
-        if a._nula and b._ceo:
-            ceo = True
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+        if not a == Neg(b):
+            self.lista = [a, Neg(b)]
 
-        if a._nula and b._realan:
-            realan = True
-
-        if a._nula and b._negativan:
-            negativan = True
-
-        if a._nula and b._pozitivan:
-            negativan = True
-
-        if b._nula and a._ceo:
-            ceo = True
-
-        if b._nula and a._realan:
-            realan = True
-
-        if b._nula and a._negativan:
-            pozitivan = True
-
-        if b._nula and a._negativan:
-            pozitivan = True
-        
-        super().__init__(ceo,realan, pozitivan, negativan,nula)
-        if not a==Neg(b):
-            self.lista = [a,Neg(b)]
-
+    @staticmethod
+    def simplify(a, b):
+        if isinstance(a, Broj) and isinstance(b, Broj):
+            vred = a._vrednost - b._vrednost
+            ceo = isinstance(vred, int)
+            realan = not ceo
+            nula = vred == 0
+            poz = vred > 0
+            neg = vred < 0
+            return Broj(vred, ceo, realan, poz, neg, nula)
+        return Sub(a, b)
     def simplify(a, b):
         if isinstance(a, Broj) and isinstance(b, Broj):
             vred = a._vrednost - b._vrednost
@@ -311,15 +301,3 @@ class Sub(Izraz):
         t = ''.join(terms)
         
         return "0" if len(t)==0 else t
-
-x = Simbol("x")
-y = Simbol("y")
-z  =Simbol("z")
-
-br = Broj(0)
-
-br2=Broj(0.75)
-print(y - (-z))
-izr=(x+y)-(y - (-z)) + z+br
-print(izr)
-
