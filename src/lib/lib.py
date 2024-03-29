@@ -22,6 +22,26 @@ class Izraz:
         return Neg.simplify(self)
 
     def __eq__(self, b):
+        if isinstance(self, Simbol):
+            if self._ime==b._ime:
+                return True
+            else:
+                return False
+        elif isinstance(self, Broj):
+            if self._vrednost==b._vrednost:
+                return True
+            else:
+                return False
+        else:
+            if not (len(self.lista)==len(b.lista)):
+                return False
+            for i in range(len(self.lista)):
+                if self.lista[i]==b.lista[i]:
+                    pass
+                else:
+                    return False
+            return True
+
         pass
         # return self==b?
 
@@ -40,16 +60,15 @@ class Izraz:
 
     def __str__(self):
         return
+    
     def subs(izraz, iz , u):
-        for _ in izraz.lista:
-            if isinstance(_, Simbol):
-                if(_._ime==iz):
-                    _._ime=u
-            elif isinstance(_, Broj):
-                if(_._vrednost==iz):
-                    _._vrednost=u
-            else:
-                Izraz.subs(_, iz, u)
+        for i in range(len(izraz.lista)):
+            nesto = izraz.lista[i]
+            if isinstance(nesto, Simbol):
+                if(nesto._ime==iz._ime):
+                    izraz.lista[i] = u
+            elif not isinstance(nesto, Broj):
+                Izraz.subs(nesto, iz, u)
         return izraz
     
     
@@ -205,4 +224,3 @@ class Add(Izraz):
             if (len(a) > 0): a = a + " + "
             a = a + x.__str__()
         return a 
-
