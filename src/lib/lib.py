@@ -1,6 +1,4 @@
 
-
-
 class Izraz:
     def __init__(self, ceo, realan, pozitivan, negativan, nula):
         self.lista=[]
@@ -20,19 +18,55 @@ class Izraz:
         self._nula = nula
         
     def __neg__(self):
+
         return Neg.simplify(self)
 
     def __eq__(self, b):
+        if isinstance(b, int):
+            b  = Broj(b, ceo=True)
+        elif isinstance(b, float):
+            b = Broj(b)
         if type(self) == type(b):
             if self.lista == b.lista:
                 return True
         return False
 
     def __add__(self, b):
+        if isinstance(b, int):
+            b  = Broj(b, ceo=True)
+        elif isinstance(b, float):
+            b = Broj(b)
+
+        print(type(b))
+        print(b._vrednost)
         return Add.simplify(self, b)
+    
+    def __pow__(self, b):
+        if isinstance(b, int):
+            b  = Broj(b, ceo=True)
+        elif isinstance(b, float):
+            b = Broj(b)
+        return Pow.simplify(self, b)
 
     def __sub__(self, b):
+        if isinstance(b, int):
+            b  = Broj(b, ceo=True)
+        elif isinstance(b, float):
+            b = Broj(b)
         return Sub.simplify(self, b)
+    
+    def __mul__(self, b):
+        if isinstance(b, int):
+            b  = Broj(b, ceo=True)
+        elif isinstance(b, float):
+            b = Broj(b)
+        return Mul.simplify(self, b)
+    def __truediv__(self, b):
+        if isinstance(b, int):
+            b  = Broj(b, ceo=True)
+        elif isinstance(b, float):
+            b = Broj(b)
+        return Div.simplify(self, b)
 
     def simplify():
         return
@@ -43,15 +77,16 @@ class Izraz:
     def __str__(self):
         return
     
-    def subs(self, iz, u):
+    def subs(self, mapa):
         for i in range(len(self.lista)):
             nesto = self.lista[i]
-            if nesto == iz:
-                self.lista[i] = u
-            elif nesto == Neg(iz):
-                self.lista[i] = Neg(u)
-            elif isinstance(nesto, Izraz):
-                nesto.subs(iz, u)
+            for iz, u in mapa:
+                if nesto == iz:
+                    self.lista[i] = u
+                elif nesto == Neg(iz):
+                    self.lista[i] = Neg(u)
+                elif isinstance(nesto, Izraz):
+                    nesto.subs(mapa)
         return self
     
 class Simbol(Izraz): #podrazumevano je realan
@@ -61,6 +96,8 @@ class Simbol(Izraz): #podrazumevano je realan
         self.lista.append(ime)
     def __str__(self):
         return f"{self._ime}"
+    def __repr__(self) -> str:
+        return f"Simbol({self._ime})"
 
 
 class Broj(Izraz): #podrazumevano je realan
@@ -70,6 +107,8 @@ class Broj(Izraz): #podrazumevano je realan
         self.lista.append(vrednost)
     def __str__(self):
         return f"{self._vrednost}"
+    def __repr__(self) -> str:
+        return f"Broj({self._vrednost})"
 
 class Neg(Izraz):
 
@@ -112,7 +151,7 @@ class Neg(Izraz):
                 s = s[:i] + '+' + s[i+1:]
             elif s[i] == '+':
                 s = s[:i] + '-' + s[i+1:]
-        return s
+        return "( "+ s+ " )"
    
 
 class Broj(Izraz):  # podrazumevano je realan
@@ -128,7 +167,7 @@ class Add(Izraz):
     def __init__(self, a, b):  # a + b
 
         ceo = None
-        realan = None
+        realan = None 
         pozitivan = None
         negativan = None
         nula = None
@@ -183,6 +222,11 @@ class Add(Izraz):
         self.lista = [a,b]
 
     def simplify(a, b):
+        if(a == Neg(b)):
+            return Broj(0)
+        if(a==b):
+            dvojka = Broj(2, ceo=True, pozitivan=True)
+            return Mul(dvojka, a)
         if isinstance(a, Broj) and isinstance(b, Broj):
             vred = a._vrednost + b._vrednost
             ceo=False
@@ -221,11 +265,11 @@ class Add(Izraz):
             return "0"
         if terms[0] == '+':
             terms = terms[1:] 
-        return ''.join(terms)
+        return "( " + ''.join(terms) + " )"
     
 class Sub(Izraz):
     def __init__(self, a, b):  # a + b
-
+       
         ceo = None
         realan = None
         pozitivan = None
@@ -259,6 +303,8 @@ class Sub(Izraz):
 
     @staticmethod
     def simplify(a, b):
+        if(a == b):
+            return Broj(0)
         if isinstance(a, Broj) and isinstance(b, Broj):
             vred = a._vrednost - b._vrednost
             ceo = isinstance(vred, int)
@@ -301,3 +347,123 @@ class Sub(Izraz):
         t = ''.join(terms)
         
         return "0" if len(t)==0 else t
+
+class Mul(Izraz):
+    def __init__(self, a, b):  # a * b
+        ceo = None
+        realan = None
+        pozitivan = None
+        negativan = None
+        nula = None
+        if a._ceo and b._ceo:
+            ceo=True
+        else:
+            realan = True
+
+        if (a._pozitivan and b._pozitivan) or (a._negativan and b._negativan):
+            pozitivan = True
+        elif a._nula or b._nula:
+            nula = True
+        else:
+            negativan=True
+        
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+        self.lista = [a, b]
+
+    @staticmethod
+    def simplify(a, b):
+        if(a==b):
+            return Pow(a, Broj(2,ceo=True,  pozitivan=True))
+        return Mul(a, b)
+
+    def __str__(self):
+        terms = []
+        for term in self.lista:
+            term_str = term.__str__()
+            if term_str[0] != '-' and terms:
+                terms.append(term_str)
+            else:
+                terms.append(term_str)
+        t = " ( " + '*'.join(terms) + " ) "
+        
+        return t
+    
+class Div(Izraz):
+    def __init__(self, a, b):  # a / b
+        ceo = None
+        realan = None
+        pozitivan = None
+        negativan = None
+        nula = None
+
+        if b._nula:
+            raise Exception("Deljenje nulom!!!!")
+        if isinstance(a, Broj) and isinstance(b, Broj) and a._vrednost%b._vrednost==0:
+            ceo=True
+        else:
+            realan = True
+
+        if (a._pozitivan and b._pozitivan) or (a._negativan and b._negativan):
+            pozitivan = True
+        elif a._nula:
+            nula = True
+        else:
+            negativan=True
+        
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+        self.lista = [a, b]
+
+    @staticmethod
+    def simplify(a, b):
+        if a==b:
+            return Broj(1, pozitivan=True)
+        return Div(a, b)
+
+    def __str__(self):
+        terms = []
+        for term in self.lista:
+            term_str = term.__str__()
+            if term_str[0] != '-' and terms:
+                terms.append('/ ' + term_str)
+            else:
+                terms.append(term_str)
+        return "( " + ' '.join(terms) + " )"
+    
+class Pow(Izraz):
+    def __init__(self, a, b):  # a / b
+        ceo = None
+        realan = None
+        pozitivan = None
+        negativan = None
+        nula = None
+
+        
+        if a._realan:
+            realan=True
+        elif b._ceo:
+            ceo = True
+        else:
+            realan = True
+
+        pozitivan=True
+        
+        super().__init__(ceo, realan, pozitivan, negativan, nula)
+        self.lista = [a, b]
+
+    @staticmethod
+    def simplify(a, b):
+        if not isinstance(b, Broj):
+            raise Exception("Eksponent mora biti broj!!!!")
+        if b._vrednost==1:
+            return a
+        return Pow(a, b)
+
+    def __str__(self):
+        terms = []
+        for term in self.lista:
+            term_str = term.__str__()
+            if term_str[0] != '-' and terms:
+                terms.append('**' + term_str)
+            else:
+                terms.append(term_str)
+        return "( " + ''.join(terms) + " )"
