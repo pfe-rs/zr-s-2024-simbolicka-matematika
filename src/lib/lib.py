@@ -68,11 +68,10 @@ class Izraz:
             b = Broj(b)
         return Div.simplify(self, b)
 
-    def simplify():
-        return
-
-    def collect():
-        return
+    @staticmethod
+    def simplify(izraz):
+        for el in izraz.lista:
+            return el.simlify(izraz)
 
     def __str__(self):
         return
