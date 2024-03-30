@@ -72,13 +72,6 @@ class Izraz:
         return Div.simplify(self, b)
     @staticmethod
     def simplify(izraz):
-        
-        print(izraz.lista)
-        print(type(izraz))
-        '''for el in izraz.lista:
-            print(el, type(el))
-            el = Izraz.simplify(el)
-            print(el)'''
         return 
 
     def __str__(self):
@@ -486,7 +479,8 @@ class Pow(Izraz):
         for term in self.lista:
             term_str = term.__str__()
             if term_str[0] != '-' and terms:
-                terms.append('**' + term_str)
+                terms.append(")**" + term_str)
             else:
                 terms.append(term_str)
-        return "( " + ''.join(terms) + " )"
+        
+        return "(" +''.join(terms)
